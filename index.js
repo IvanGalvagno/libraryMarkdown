@@ -1,26 +1,21 @@
 import chalk from 'chalk';
+import fs from 'fs'
 
 console.log(chalk.blue('Hello world!'));
-const paragrafo = 'Texto retornado por uma function';
 
-function texto(string) {
-    return string;
+
+function errorHandler(pError){
+    throw new Error(chalk.white.bgRedBright(pError.code, 'field not found'));
 }
 
-console.log(texto(paragrafo));
+function getFile(filePath) {
+    const encoding = 'utf-8';
+    fs.readFile(filePath, encoding, (error, data)=> {
+        if (error)
+            errorHandler(error);
+        console.log(chalk.black.bgGreen.bold('Success'));
+        console.log(chalk.magentaBright(data));
+    })
+}
 
-//encadear métodos para colorir texto, cor de fundo e texto em negrito
-console.log(chalk.blue.bgWhite.bold('Alura'));
-
-//receber múltiplos argumentos
-console.log(chalk.blue('curso', 'de', 'NodeJS'));
-
-//métodos aninhados
-console.log(chalk.red('vermelho', chalk.underline.bgBlue('azul')));
-
-// uso de template strings e placeholders
-console.log(`
-CPU: ${chalk.red('90%')}
-RAM: ${chalk.green('40%')}
-DISK: ${chalk.yellow('70%')}
-`);
+getFile('./arquivos/texto1.md')

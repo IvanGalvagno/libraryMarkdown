@@ -32,4 +32,6 @@ async function getFile(filePath){
     }
 }
 
-getFile('./arquivos/texto1.md')
+// getFile('./arquivos/texto1.md')
+
+export default getFile

@@ -16,7 +16,7 @@ function extractLinks(text){
     while ((aux = regex.exec(text)) !== null) {
         arrayWithResult.push({[aux[1]]: aux[2]});
     }
-    return arrayWithResult;
+    return arrayWithResult.length === 0 ? 'There is no links!' : arrayWithResult;
 }
 
 //Get the file from path then readed using promise async/await and print the result
@@ -24,7 +24,7 @@ async function getFile(filePath){
     const encoding = 'utf-8';
     try {
         const data = await fs.promises.readFile(filePath, encoding)
-        console.log(extractLinks(data));
+        return extractLinks(data);
     } catch (error) {
         errorHandler(error)
     } finally{
@@ -32,6 +32,4 @@ async function getFile(filePath){
     }
 }
 
-// getFile('./arquivos/texto1.md')
-
-export default getFile
+export default getFile;

@@ -1,5 +1,11 @@
 import chalk from 'chalk';
-import fs from 'fs'
+import fs from 'fs';
+import path from 'node:path/win32';
+import { dirname } from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 // Handle the error message
 function errorHandler(pError){
@@ -21,14 +27,18 @@ function extractLinks(text){
 
 //Get the file from path then readed using promise async/await and print the result
 async function getFile(filePath){
+    const caminhoAbsoluto = path.join(__dirname, '..', filePath);
     const encoding = 'utf-8';
     try {
-        const data = await fs.promises.readFile(filePath, encoding)
-        return extractLinks(data);
-    } catch (error) {
-        errorHandler(error)
-    } finally{
-        console.log(chalk.yellow('operação concluída'));
+      const arquivos = await fs.promises.readdir(caminhoAbsoluto, { encoding });
+      const result = await Promise.all(arquivos.map(async (arquivo) => {
+        const localArquivo = `${caminhoAbsoluto}/${arquivo}`;
+        const texto = await fs.promises.readFile(localArquivo, encoding);
+        return extractLinks(texto);
+      }));
+      return result;
+    } catch (erro) {
+      return errorHandler(erro);
     }
 }
 

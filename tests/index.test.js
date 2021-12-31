@@ -15,4 +15,8 @@ describe('getFile::', () => {
         const result = await getFile('../arquivos/texto1.md')
         expect(result).toEqual(arrayResult);
     })
+    it('Should return a message "There is no links!"', async () => {
+        const result = await getFile('../arquivos/texto1_semLink.md')
+        expect(result).toBe('There is no links!')
+    })
 })

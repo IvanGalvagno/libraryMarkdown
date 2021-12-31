@@ -11,7 +11,7 @@ async function checkStatus(arrayURLs) {
             .all(arrayURLs
                 .map(async url => {
                     const response = await fetch(url)
-                    return response.status;
+                    return `${response.status} - ${response.statusText}`
                 }));
         return arrayStatus;
     } catch (e) {
